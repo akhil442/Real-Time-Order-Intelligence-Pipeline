@@ -54,25 +54,25 @@ This pipeline processes streaming order data and ensures:
 
 
 
-| Component        | Technology Used                         |
+| Component | Technology Used |
 
-|------------------|-----------------------------------------|
+|---|---|
 
-| Data Producer    | Python                                  |
+| Data Producer | Python |
 
-| Streaming Layer  | Apache Kafka                            |
+| Streaming Layer | Apache Kafka |
 
-| Processing       | Apache Spark Structured Streaming       |
+| Processing | Apache Spark Structured Streaming |
 
-| Storage          | Parquet (Clean Data), JSON (Quarantine) |
+| Storage | Parquet (Clean Data), JSON (Quarantine) |
 
-| Monitoring API   | FastAPI                                 |
+| Monitoring API | FastAPI |
 
-| Metrics          | Prometheus                              |
+| Metrics | Prometheus |
 
-| Visualization    | Grafana                                 |
+| Visualization | Grafana |
 
-| Orchestration    | Docker                                  |
+| Orchestration | Docker |
 
 
 
@@ -156,7 +156,7 @@ This pipeline processes streaming order data and ensures:
 
 
 
-!\[Dashboard](screenshots/grafana\_dashboard.png)
+!\[Grafana Dashboard](screenshots/grafana\_dashboard.png)
 
 
 
@@ -224,7 +224,7 @@ bad\_record\_count
 
 
 
-!\[Quarantine](screenshots/quarantine\_data.png)
+!\[Quarantine Data](screenshots/quarantine\_data.png)
 
 
 
@@ -236,7 +236,7 @@ bad\_record\_count
 
 
 
-!\[Producer](screenshots/producer\_stream.png)
+!\[Producer Stream](screenshots/producer\_stream.png)
 
 
 
@@ -284,15 +284,15 @@ python producer/producer.py
 
 
 
-| Service    | URL                    |
+| Service | URL |
 
-|------------|------------------------|
+|---|---|
 
-| Kafka      | `localhost:9092`       |
+| Kafka | `localhost:9092` |
 
-| Prometheus | http://localhost:9090  |
+| Prometheus | http://localhost:9090 |
 
-| Grafana    | http://localhost:3000  |
+| Grafana | http://localhost:3000 |
 
 
 
