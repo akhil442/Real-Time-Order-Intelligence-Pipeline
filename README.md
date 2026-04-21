@@ -1,372 +1,196 @@
-\# 🚀 Real-Time Order Intelligence Pipeline
+# 🚀 Real-Time Order Intelligence Pipeline
 
-
-
-A complete \*\*end-to-end real-time data engineering pipeline\*\* built using Kafka, Spark Structured Streaming, Prometheus, and Grafana.
-
-
+A complete **end-to-end real-time data engineering pipeline** built using Kafka, Spark Structured Streaming, Prometheus, and Grafana.
 
 This project simulates an e-commerce streaming system where orders are processed, validated, monitored, and visualized in real time.
 
+---
 
-
-\---
-
-
-
-\## 📌 Project Overview
-
-
+## 📌 Project Overview
 
 This pipeline processes streaming order data and ensures:
 
+* ✅ Real-time ingestion using Kafka
+* ✅ Data validation and deduplication
+* ✅ Clean vs invalid data separation
+* ✅ Metrics generation for monitoring
+* ✅ Live dashboard for decision-making
 
+---
 
-\- ✅ Real-time ingestion using Kafka
+## 🧱 Architecture
 
-\- ✅ Data validation and deduplication
+![Architecture](https://raw.githubusercontent.com/akhil442/Real-Time-Order-Intelligence-Pipeline/main/screenshots/architecture.png)
 
-\- ✅ Clean vs invalid data separation
+---
 
-\- ✅ Metrics generation for monitoring
+## ⚙️ Tech Stack
 
-\- ✅ Live dashboard for decision-making
+| Component       | Technology Used                         |
+| --------------- | --------------------------------------- |
+| Data Producer   | Python                                  |
+| Streaming Layer | Apache Kafka                            |
+| Processing      | Apache Spark Structured Streaming       |
+| Storage         | Parquet (Clean Data), JSON (Quarantine) |
+| Monitoring API  | FastAPI                                 |
+| Metrics         | Prometheus                              |
+| Visualization   | Grafana                                 |
+| Orchestration   | Docker                                  |
 
+---
 
+## 🔄 Data Flow
 
-\---
+1. **Python Producer**
 
+   * Generates real-time order events
+   * Sends data to Kafka topic
 
+2. **Kafka**
 
-\## 🧱 Architecture
+   * Acts as streaming buffer
+   * Handles high-throughput ingestion
 
+3. **Spark Structured Streaming**
 
+   * Reads Kafka data
+   * Performs:
 
-!\[Architecture](screenshots/architecture.png)
+     * Validation
+     * Deduplication
+     * Aggregations
 
+4. **Data Output**
 
+   * ✅ Clean data → `/tmp/raw_orders_clean`
+   * ⚠️ Invalid data → `/tmp/quarantine_orders`
 
-\---
+5. **Metrics API**
 
+   * Tracks:
 
+     * Duplicate events
+     * Late events
+     * Invalid records
+     * Bad data %
 
-\## ⚙️ Tech Stack
+6. **Prometheus**
 
+   * Scrapes metrics from the FastAPI `/metrics` endpoint
 
+7. **Grafana**
 
-| Component | Technology Used |
+   * Visualizes system health and pipeline metrics
 
-|---|---|
+---
 
-| Data Producer | Python |
+## 📊 Grafana Dashboard
 
-| Streaming Layer | Apache Kafka |
+![Grafana Dashboard](https://raw.githubusercontent.com/akhil442/Real-Time-Order-Intelligence-Pipeline/main/screenshots/grafana_dashboard.png)
 
-| Processing | Apache Spark Structured Streaming |
+### 🔍 What You Can Understand From the Dashboard
 
-| Storage | Parquet (Clean Data), JSON (Quarantine) |
+* Total incoming records
+* Duplicate events (data issue detection)
+* Invalid payment / quantity errors
+* Pipeline health status
+* Real-time trends
 
-| Monitoring API | FastAPI |
+👉 Even a beginner can quickly identify if something is wrong in the pipeline.
 
-| Metrics | Prometheus |
+---
 
-| Visualization | Grafana |
+## 📡 Prometheus Metrics
 
-| Orchestration | Docker |
-
-
-
-\---
-
-
-
-\## 🔄 Data Flow
-
-
-
-1\. \*\*Python Producer\*\*
-
-&#x20;  - Generates real-time order events
-
-&#x20;  - Sends data to Kafka topic
-
-
-
-2\. \*\*Kafka\*\*
-
-&#x20;  - Acts as streaming buffer
-
-&#x20;  - Handles high-throughput ingestion
-
-
-
-3\. \*\*Spark Structured Streaming\*\*
-
-&#x20;  - Reads Kafka data
-
-&#x20;  - Performs:
-
-&#x20;    - Validation
-
-&#x20;    - Deduplication
-
-&#x20;    - Aggregations
-
-
-
-4\. \*\*Data Output\*\*
-
-&#x20;  - ✅ Clean data → `/tmp/raw\_orders\_clean`
-
-&#x20;  - ⚠️ Invalid data → `/tmp/quarantine\_orders`
-
-
-
-5\. \*\*Metrics API\*\*
-
-&#x20;  - Tracks:
-
-&#x20;    - Duplicate events
-
-&#x20;    - Late events
-
-&#x20;    - Invalid records
-
-&#x20;    - Bad data %
-
-
-
-6\. \*\*Prometheus\*\*
-
-&#x20;  - Scrapes metrics from the FastAPI `/metrics` endpoint
-
-
-
-7\. \*\*Grafana\*\*
-
-&#x20;  - Visualizes system health and pipeline metrics
-
-
-
-\---
-
-
-
-\## 📊 Grafana Dashboard
-
-
-
-!\[Grafana Dashboard](screenshots/grafana\_dashboard.png)
-
-
-
-\### 🔍 What You Can Understand From the Dashboard
-
-
-
-\- Total incoming records
-
-\- Duplicate events (data issue detection)
-
-\- Invalid payment / quantity errors
-
-\- Pipeline health status
-
-\- Real-time trends
-
-
-
-> 👉 Even a beginner can quickly identify if something is wrong in the pipeline.
-
-
-
-\---
-
-
-
-\## 📡 Prometheus Metrics
-
-
-
-!\[Prometheus](screenshots/prometheus\_query.png)
-
-
+![Prometheus](https://raw.githubusercontent.com/akhil442/Real-Time-Order-Intelligence-Pipeline/main/screenshots/prometheus_query.png)
 
 Example query:
 
-
-
-```promql
-
-bad\_record\_count
-
+```
+bad_record_count
 ```
 
+---
 
+## 📦 Data Output (Proof)
 
-\---
+### ✅ Clean Data (Valid Records)
 
+![Clean Data](https://raw.githubusercontent.com/akhil442/Real-Time-Order-Intelligence-Pipeline/main/screenshots/clean_data.png)
 
+### ⚠️ Quarantine Data (Invalid Records)
 
-\## 📦 Data Output (Proof)
+![Quarantine Data](https://raw.githubusercontent.com/akhil442/Real-Time-Order-Intelligence-Pipeline/main/screenshots/quarantine_data.png)
 
+---
 
+## 📤 Producer Stream
 
-\### ✅ Clean Data (Valid Records)
-
-
-
-!\[Clean Data](screenshots/clean\_data.png)
-
-
-
-\### ⚠️ Quarantine Data (Invalid Records)
-
-
-
-!\[Quarantine Data](screenshots/quarantine\_data.png)
-
-
-
-\---
-
-
-
-\## 📤 Producer Stream
-
-
-
-!\[Producer Stream](screenshots/producer\_stream.png)
-
-
+![Producer Stream](https://raw.githubusercontent.com/akhil442/Real-Time-Order-Intelligence-Pipeline/main/screenshots/producer_stream.png)
 
 Shows:
 
-\- Normal events
+* Normal events
+* Duplicate events simulation
 
-\- Duplicate events simulation
+---
 
+## ▶️ How to Run
 
-
-\---
-
-
-
-\## ▶️ How to Run
-
-
-
-\### Step 1: Start everything
-
-
+### Step 1: Start everything
 
 ```bash
-
 docker-compose up --build
-
 ```
 
-
-
-\### Step 2: Run Producer
-
-
+### Step 2: Run Producer
 
 ```bash
-
 python producer/producer.py
-
 ```
 
+### Step 3: Access Services
 
-
-\### Step 3: Access Services
-
-
-
-| Service | URL |
-
-|---|---|
-
-| Kafka | `localhost:9092` |
-
+| Service    | URL                   |
+| ---------- | --------------------- |
+| Kafka      | localhost:9092        |
 | Prometheus | http://localhost:9090 |
+| Grafana    | http://localhost:3000 |
 
-| Grafana | http://localhost:3000 |
+---
 
+## 🎯 Key Features
 
+* ⚡ Real-time streaming pipeline
+* 🛡️ Fault-tolerant architecture
+* 🔍 Data quality monitoring
+* 📈 Scalable design
+* 🔭 End-to-end observability
 
-\---
+---
 
-
-
-\## 🎯 Key Features
-
-
-
-\- ⚡ Real-time streaming pipeline
-
-\- 🛡️ Fault-tolerant architecture
-
-\- 🔍 Data quality monitoring
-
-\- 📈 Scalable design
-
-\- 🔭 End-to-end observability
-
-
-
-\---
-
-
-
-\## 💡 Why This Project Matters
-
-
+## 💡 Why This Project Matters
 
 In real-world systems:
 
+* 🚨 Bad data can break analytics
+* 💸 Duplicate events cause revenue errors
+* ⏰ Late data impacts decisions
 
+👉 This pipeline detects and handles all these issues in real time.
 
-\- 🚨 Bad data can break analytics
+---
 
-\- 💸 Duplicate events cause revenue errors
+## 🚀 Future Improvements
 
-\- ⏰ Late data impacts decisions
+* 🔔 Alerting (Grafana Alerts)
+* 📋 Kafka Schema Registry
+* 🌀 Airflow Orchestration
+* ☁️ Cloud Deployment (AWS / Azure)
 
+---
 
+## 👨‍💻 Author
 
-> 👉 This pipeline detects and handles all these issues in real time.
-
-
-
-\---
-
-
-
-\## 🚀 Future Improvements
-
-
-
-\- 🔔 Alerting (Grafana Alerts)
-
-\- 📋 Kafka Schema Registry
-
-\- 🌀 Airflow Orchestration
-
-\- ☁️ Cloud Deployment (AWS / Azure)
-
-
-
-\---
-
-
-
-\## 👨‍💻 Author
-
-
-
-\*\*Akhil Puttabanthi\*\*  
-
+**Akhil Puttabanthi**
 MS Data Science — University of New Haven
-
